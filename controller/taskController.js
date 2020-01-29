@@ -1,8 +1,8 @@
 const Task = require('../model/taskModel')
 
-const create = async (req) => {
+const create = async (arg) => {
   try{
-    const task = new Task({...req})
+    const task = new Task({...arg})
     await task.save()
     return task
   } catch(err){
@@ -19,7 +19,17 @@ const getAll = async () => {
   }
 };
 
+const getById = async (arg) => {
+  try{
+    const tasks = await Task.findById(arg).exec()
+    return tasks
+  } catch(err){
+    throw 400
+  }
+};
+
 module.exports = {
   getAll,
+  getById,
   create,
 }

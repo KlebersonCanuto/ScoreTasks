@@ -1,4 +1,4 @@
-const Task = require('../model/taskModel')
+const Task = require('../controller/taskController')
 const {
   GraphQLObjectType,
   GraphQLString,
@@ -46,13 +46,13 @@ const TaskQuery = new GraphQLObjectType({
         }
       },
       resolve (parent, args) {
-        return Task.findById(args.id)
+        return Task.getById(args.id)
       }
     },
     tasks: {
       type: new GraphQLList(TaskType),
       resolve(parent, args) {
-        return Task.find({})
+        return Task.getAll()
       }
     }
   }
@@ -79,11 +79,7 @@ const TaskMutation = new GraphQLObjectType({
       },
       resolve(parent, args) {
         const categories = ["teste"]
-        const task = new Task({
-            ...args,
-            categories: categories
-        })
-        return task.save()
+        return Task.create({...args, categories: categories})
       }
     }
   }
