@@ -81,7 +81,44 @@ const TaskMutation = new GraphQLObjectType({
         const categories = ["teste"]
         return Task.create({...args, categories: categories})
       }
-    }
+    },
+    removeTask: {
+      type: TaskType,
+      args: {
+        id: {
+          type: new GraphQLNonNull(GraphQLString)
+        }
+      },
+      resolve(parent, args) {
+        return Task.remove(args.id)
+      }
+    },
+    updateTask: {
+      type: TaskType,
+      args: {
+        name: {
+          type: new GraphQLNonNull(GraphQLString)
+        },
+        description: {
+          type: new GraphQLNonNull(GraphQLString)
+        },
+        points: {
+          type: new GraphQLNonNull(GraphQLFloat)
+        },
+        positive: {
+          type: new GraphQLNonNull(GraphQLBoolean)
+        },
+        id: {
+          type: new GraphQLNonNull(GraphQLString)
+        },
+        categories: {
+          type: new GraphQLList(GraphQLString)
+        }
+      },
+      resolve(parent, args) {
+        return Task.update(args)
+      }
+    },
   }
 })
 
