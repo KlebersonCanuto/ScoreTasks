@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const mongoose = require('mongoose')
 const indexRouter = require('./routes/index')
-const schema = require('./gql/schemas')
+const schema = require('./utils/schemas')
 const graphqlHTTP = require('express-graphql')
 const app = express()
 
