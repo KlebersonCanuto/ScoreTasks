@@ -9,6 +9,8 @@ const taskRouter = require('./routes/taskRouter')
 const indexRouter = require('./routes/index')
 const schema = require('./utils/schemas')
 const graphqlHTTP = require('express-graphql')
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./utils/docs')
 const app = express()
 
 const MONGO_URL = process.env.MONGO_URL
@@ -28,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', indexRouter)
 app.use('/task', taskRouter)
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use('/graphql', graphqlHTTP({
   schema,
   graphiql: true
