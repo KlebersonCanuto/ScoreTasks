@@ -11,13 +11,14 @@ const schema = require('./utils/schemas')
 const graphqlHTTP = require('express-graphql')
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./utils/docs')
+const cors = require('cors')
 const app = express()
 
 const MONGO_URL = process.env.MONGO_URL
 
 mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 mongoose.set('useCreateIndex', true)
-
+app.use(cors())
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
