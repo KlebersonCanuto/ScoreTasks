@@ -5,6 +5,7 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const mongoose = require('mongoose')
+const taskRouter = require('./routes/taskRouter')
 const indexRouter = require('./routes/index')
 const schema = require('./utils/schemas')
 const graphqlHTTP = require('express-graphql')
@@ -26,7 +27,7 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', indexRouter)
-
+app.use('/task', taskRouter)
 app.use('/graphql', graphqlHTTP({
   schema,
   graphiql: true

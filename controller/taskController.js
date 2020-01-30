@@ -1,8 +1,8 @@
 const Task = require('../model/taskModel')
 
-const create = async (arg) => {
+const create = async (args) => {
   try{
-    const task = new Task({...arg})
+    const task = new Task({...args})
     await task.save()
     return task
   } catch(err){
@@ -28,9 +28,9 @@ const getById = async (id) => {
   }
 };
 
-const update = async (args) => {
+const update = async (id, args) => {
   try{
-    const { id, name, description, points, positive, categories } = args
+    const { name, description, points, positive, categories } = args
     let task = await Task.findById(id).exec()
     task.name = name
     task.description = description

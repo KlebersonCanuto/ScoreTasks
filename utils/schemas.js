@@ -45,13 +45,13 @@ const TaskQuery = new GraphQLObjectType({
           type: GraphQLID
         }
       },
-      resolve (parent, args) {
+      resolve (_, args) {
         return Task.getById(args.id)
       }
     },
     tasks: {
       type: new GraphQLList(TaskType),
-      resolve(parent, args) {
+      resolve() {
         return Task.getAll()
       }
     }
@@ -77,7 +77,7 @@ const TaskMutation = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLBoolean)
         },
       },
-      resolve(parent, args) {
+      resolve(_, args) {
         const categories = ["teste"]
         return Task.create({...args, categories: categories})
       }
@@ -89,7 +89,7 @@ const TaskMutation = new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve(parent, args) {
+      resolve(_, args) {
         return Task.remove(args.id)
       }
     },
@@ -115,7 +115,7 @@ const TaskMutation = new GraphQLObjectType({
           type: new GraphQLList(GraphQLString)
         }
       },
-      resolve(parent, args) {
+      resolve(_, args) {
         return Task.update(args)
       }
     },
