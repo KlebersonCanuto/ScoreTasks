@@ -3,6 +3,7 @@ const User = require('../model/userModel')
 const create = async (args) => {
   try{
     const user = new User({...args})
+    console.log(user)
     await user.save()
     return user
   } catch(err){

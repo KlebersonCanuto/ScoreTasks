@@ -27,6 +27,22 @@ const router = express.Router()
  *         type: array
  *         items:
  *          type: string
+ *   User:
+ *     required:
+ *       - username
+ *       - password
+ *       - email
+ *     properties:
+ *       username:
+ *         type: string
+ *       _id:
+ *         type: string
+ *       password:
+ *         type: string
+ *       email:
+ *         type: string
+ *       _v:
+ *         type: integer
  */
 
 router.get('/', function(_, res) {
