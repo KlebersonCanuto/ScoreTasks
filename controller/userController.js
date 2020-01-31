@@ -1,11 +1,20 @@
 const User = require('../model/userModel')
+const bcrypt = require('bcrypt')
 
 const create = async (args) => {
   try{
-    const user = new User({...args})
-    console.log(user)
-    await user.save()
-    return user
+    const { username, password, confirmPassword, email } = args
+    if(password === confirmPassword){
+      const hash = await bcrypt.hashSync(password, Number(process.env.HASH))
+      let user = new User()
+      user.username = username.toLowerCase()
+      user.password = hash
+      user.email = email
+      await user.save()
+      return user
+    } else {
+      throw 400
+    }
   } catch(err){
     throw 400
   }
@@ -18,7 +27,7 @@ const getAll = async () => {
   } catch(err){
     throw 400
   }
-};
+}
 
 const getById = async (id) => {
   try{
@@ -27,7 +36,16 @@ const getById = async (id) => {
   } catch(err){
     throw 400
   }
-};
+}
+
+const getByUsername = async (username) => {
+  try{
+    const user = await User.findOne({username}).exec()
+    return user
+  } catch(err){
+    throw 400
+  }
+}
 
 const update = async (id, args) => {
   try{
@@ -55,6 +73,7 @@ const remove = async (id) => {
 module.exports = {
   getAll,
   getById,
+  getByUsername,
   create,
   update,
   remove

@@ -127,6 +127,9 @@ const Mutations = new GraphQLObjectType({
         password: {
           type: new GraphQLNonNull(GraphQLString)
         },
+        confirmPassword: {
+          type: new GraphQLNonNull(GraphQLString)
+        },
         email: {
           type: new GraphQLNonNull(GraphQLString)
         },
@@ -199,7 +202,7 @@ const Mutations = new GraphQLObjectType({
       resolve(_, args) {
         return User.update(args.id, args)
       }
-    }
+    },
   }
 })
 

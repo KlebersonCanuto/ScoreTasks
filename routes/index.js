@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const login = require('../utils/login')
 
 /**
  * @swagger
@@ -46,7 +47,32 @@ const router = express.Router()
  */
 
 router.get('/', function(_, res) {
-  res.render('index', { title: 'ScoreTasks' });
-});
+  res.render('index', { title: 'ScoreTasks' })
+})
+
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     tags: [
+ *       login
+ *     ]
+ *     sumary: login
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *      - in: body
+ *        name: Usuário
+ *        schema:
+ *         type: object
+ *         properties:
+ *           username:
+ *             type: string
+ *           password:
+ *             type: string
+ */
+router.post('/login', function(req, res) {
+  login.login(req, res)
+})
 
 module.exports = router
