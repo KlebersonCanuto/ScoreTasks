@@ -1,4 +1,5 @@
 const Task = require('../controller/taskController')
+const User = require('../controller/userController')
 const {
   GraphQLObjectType,
   GraphQLString,
@@ -35,8 +36,26 @@ const TaskType = new GraphQLObjectType({
   })
 })
 
-const TaskQuery = new GraphQLObjectType({
-  name: 'TaskQuery',
+const UserType = new GraphQLObjectType({
+  name: 'User',
+  fields: () => ({
+    id: {
+      type: GraphQLID
+    },
+    username: {
+      type: GraphQLString
+    },
+    password: {
+      type: GraphQLString
+    },
+    email: {
+      type: GraphQLString
+    },
+  })
+})
+
+const Querys = new GraphQLObjectType({
+  name: 'Querys',
   fields: {
     task: {
       type: TaskType,
@@ -54,12 +73,29 @@ const TaskQuery = new GraphQLObjectType({
       resolve() {
         return Task.getAll()
       }
+    },
+    user: {
+      type: UserType,
+      args: {
+        id: {
+          type: GraphQLID
+        }
+      },
+      resolve (_, args) {
+        return User.getById(args.id)
+      }
+    },
+    users: {
+      type: new GraphQLList(UserType),
+      resolve() {
+        return User.getAll()
+      }
     }
   }
 })
 
-const TaskMutation = new GraphQLObjectType({
-  name: 'TaskMutation',
+const Mutations = new GraphQLObjectType({
+  name: 'Mutations',
   fields: {
     addTask: {
       type: TaskType,
@@ -82,6 +118,23 @@ const TaskMutation = new GraphQLObjectType({
         return Task.create({...args, categories: categories})
       }
     },
+    addUser: {
+      type: UserType,
+      args: {
+        username: {
+          type: new GraphQLNonNull(GraphQLString)
+        },
+        password: {
+          type: new GraphQLNonNull(GraphQLString)
+        },
+        email: {
+          type: new GraphQLNonNull(GraphQLString)
+        },
+      },
+      resolve(_, args) {
+        return User.create(args)
+      }
+    },
     removeTask: {
       type: TaskType,
       args: {
@@ -91,6 +144,17 @@ const TaskMutation = new GraphQLObjectType({
       },
       resolve(_, args) {
         return Task.remove(args.id)
+      }
+    },
+    removeUser: {
+      type: UserType,
+      args: {
+        id: {
+          type: new GraphQLNonNull(GraphQLString)
+        }
+      },
+      resolve(_, args) {
+        return User.remove(args.id)
       }
     },
     updateTask: {
@@ -116,13 +180,30 @@ const TaskMutation = new GraphQLObjectType({
         }
       },
       resolve(_, args) {
-        return Task.update(args)
+        return Task.update(args.id, args)
       }
     },
+    updateUser: {
+      type: UserType,
+      args: {
+        username: {
+          type: new GraphQLNonNull(GraphQLString)
+        },
+        email: {
+          type: new GraphQLNonNull(GraphQLString)
+        },
+        id: {
+          type: new GraphQLNonNull(GraphQLString)
+        }
+      },
+      resolve(_, args) {
+        return User.update(args.id, args)
+      }
+    }
   }
 })
 
 module.exports = new GraphQLSchema({
-  query: TaskQuery,
-  mutation: TaskMutation
+  query: Querys,
+  mutation: Mutations
 })
