@@ -33,7 +33,7 @@ const Auth = require("../utils/authentication")
  *                 type: object
  *                 $ref: '#/definitions/Task'
  */
-router.get('/', async function(_, res) {
+router.get('/', async function(req, res) {
   try{
     const owner = Auth.getUser(req)
     const data = await task.getAll(owner)
