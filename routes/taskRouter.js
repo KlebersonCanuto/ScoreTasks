@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const task = require('../controller/taskController')
+const Auth = require("../utils/authentication")
 
 /**
  * @swagger
@@ -13,6 +14,13 @@ const task = require('../controller/taskController')
  *     description: Return a list of tasks
  *     produces:
  *       - application/json
+ *     parameters:
+ *      - name: authorization
+ *        in: header
+ *        required: true
+ *        description: Recebido ao logar
+ *        schema:
+ *          type: string
  *     responses:
  *       200:
  *         description: success
@@ -27,7 +35,8 @@ const task = require('../controller/taskController')
  */
 router.get('/', async function(_, res) {
   try{
-    const data = await task.getAll()
+    const owner = Auth.getUser(req)
+    const data = await task.getAll(owner)
     res.status(200).send({data: data})
   } catch(err){
     res.status(400).send()
@@ -46,6 +55,12 @@ router.get('/', async function(_, res) {
  *     consumes:
  *       - application/json
  *     parameters:
+ *      - name: authorization
+ *        in: header
+ *        required: true
+ *        description: Recebido ao logar
+ *        schema:
+ *          type: string
  *      - in: body
  *        name: Usuário
  *        schema:
@@ -71,7 +86,8 @@ router.get('/', async function(_, res) {
  */
 router.post('/', async function(req, res) {
   try{
-    const data = await task.create(req.body)
+    const owner = Auth.getUser(req)
+    const data = await task.create({...req.body, owner})
     res.status(200).send({data: data})
   } catch(err){
     res.status(400).send()
@@ -88,9 +104,15 @@ router.post('/', async function(req, res) {
  *     sumary: Return a specific task
  *     description: Return a specific task with parameter id
  *     parameters:
- *       - name: task_id
- *         in: path
- *         required: true
+ *      - name: authorization
+ *        in: header
+ *        required: true
+ *        description: Recebido ao logar
+ *        schema:
+ *          type: string
+ *      - name: task_id
+ *        in: path
+ *        required: true
  *     responses:
  *       200:
  *         description: success
@@ -122,6 +144,12 @@ router.get('/:task_id', async function(req, res) {
  *     consumes:
  *       - application/json
  *     parameters:
+ *       - name: authorization
+ *         in: header
+ *         required: true
+ *         description: Recebido ao logar
+ *         schema:
+ *           type: string
  *       - name: task_id
  *         in: path
  *         required: true
@@ -154,6 +182,7 @@ router.get('/:task_id', async function(req, res) {
  */
 router.put('/:task_id', async function(req, res) {
   try{
+    const owner = Auth.getUser(req)
     const data = await task.update(req.params.task_id, req.body)
     res.status(200).send({data: data})
   } catch(err){
@@ -171,6 +200,12 @@ router.put('/:task_id', async function(req, res) {
  *     sumary: Return a specific task
  *     description: Return a specific task with parameter id
  *     parameters:
+ *       - name: authorization
+ *         in: header
+ *         required: true
+ *         description: Recebido ao logar
+ *         schema:
+ *           type: string
  *       - name: task_id
  *         in: path
  *         required: true
@@ -188,6 +223,7 @@ router.put('/:task_id', async function(req, res) {
  */
 router.delete('/:task_id', async function(req, res) {
   try{
+    const owner = Auth.getUser(req)
     const data = await task.remove(req.params.task_id)
     res.status(200).send({data: data})
   } catch(err){

@@ -10,9 +10,9 @@ const create = async (args) => {
   }
 }
 
-const getAll = async () => {
+const getAll = async (owner) => {
   try{
-    const tasks = await Task.find().exec()
+    const tasks = await Task.find({owner}).exec()
     return tasks
   } catch(err){
     throw 400

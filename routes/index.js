@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const login = require('../utils/login')
 
 /**
  * @swagger
@@ -11,12 +10,15 @@ const login = require('../utils/login')
  *       - description
  *       - points
  *       - positive
+ *       - owner
  *     properties:
  *       name:
  *         type: string
  *       _id:
  *         type: string
  *       description:
+ *         type: string
+ *       owner:
  *         type: string
  *       points:
  *         type: number
@@ -33,6 +35,7 @@ const login = require('../utils/login')
  *       - username
  *       - password
  *       - email
+ *       - points
  *     properties:
  *       username:
  *         type: string
@@ -42,37 +45,14 @@ const login = require('../utils/login')
  *         type: string
  *       email:
  *         type: string
+ *       points:
+ *         type: number
  *       _v:
  *         type: integer
  */
 
 router.get('/', function(_, res) {
   res.render('index', { title: 'ScoreTasks' })
-})
-
-/**
- * @swagger
- * /login:
- *   post:
- *     tags: [
- *       login
- *     ]
- *     sumary: login
- *     consumes:
- *       - application/json
- *     parameters:
- *      - in: body
- *        name: Usuário
- *        schema:
- *         type: object
- *         properties:
- *           username:
- *             type: string
- *           password:
- *             type: string
- */
-router.post('/login', function(req, res) {
-  login.login(req, res)
 })
 
 module.exports = router

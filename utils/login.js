@@ -18,6 +18,16 @@ const login = async (req, res) => {
   }
 }
 
+const isValid = (req, res) => {
+  try{
+    const valid = Auth.isValid(req)
+    res.status(200).send({valid})
+  } catch(err){
+    res.status(200).send({valid: false})
+  }
+}
+
 module.exports = {
   login,
+  isValid,
 }
