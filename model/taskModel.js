@@ -5,7 +5,7 @@ const TaskSchema = mongoose.Schema({
   description: String,
   points: Number,
   positive: Boolean,
-  categories: Array,
+  categories: [String],
   owner: String,
   done: Boolean
 })

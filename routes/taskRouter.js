@@ -88,7 +88,7 @@ router.get('/', async function(req, res) {
 router.post('/', async function(req, res) {
   try{
     const owner = Auth.getUser(req)
-    const task = await Task.create({...req.body, owner, done: false})
+    const task = await Task.create({...req.body, owner})
     res.status(200).send({data: task})
   } catch(err){
     res.status(400).send()
@@ -104,6 +104,38 @@ router.post('/', async function(req, res) {
  *     ]
  *     sumary: Return a specific task
  *     description: Return a specific task with parameter id
+ *     parameters:
+ *      - name: task_id
+ *        in: path
+ *        required: true
+ *     responses:
+ *       200:
+ *         description: success
+ *         schema:
+ *           type: object
+ *           properties:
+ *             data:
+ *               type: object
+ *               $ref: '#/definitions/Task'
+ */
+router.get('/:task_id', async function(req, res) {
+  try{
+    const task = await Task.getById(req.params.task_id)
+    res.status(200).send({data: task})
+  } catch(err){
+    res.status(400).send()
+  }
+})
+
+/**
+ * @swagger
+ * /task/category/:category:
+ *   get:
+ *     tags: [
+ *       task
+ *     ]
+ *     sumary: Return all tasks that contains the category
+ *     description: Return all user's tasks that contains the category
  *     parameters:
  *      - name: authorization
  *        in: header
@@ -124,10 +156,83 @@ router.post('/', async function(req, res) {
  *               type: object
  *               $ref: '#/definitions/Task'
  */
-router.get('/:task_id', async function(req, res) {
+router.get('/category/:category', async function(req, res) {
   try{
-    const task = await Task.getById(req.params.task_id)
-    res.status(200).send({data: task})
+    const owner = Auth.getUser(req)
+    const tasks = await Task.getCategory(owner, req.params.category)
+    res.status(200).send({data: tasks})
+  } catch(err){
+    res.status(400).send()
+  }
+})
+
+/**
+ * @swagger
+ * /task/positives:
+ *   get:
+ *     tags: [
+ *       task
+ *     ]
+ *     sumary: Return all positivies tasks
+ *     description: Return all positivies tasks of the user
+ *     parameters:
+ *      - name: authorization
+ *        in: header
+ *        required: true
+ *        description: Recebido ao logar
+ *        schema:
+ *          type: string
+ *     responses:
+ *       200:
+ *         description: success
+ *         schema:
+ *           type: object
+ *           properties:
+ *             data:
+ *               type: object
+ *               $ref: '#/definitions/Task'
+ */
+router.get('/positives', async function(req, res) {
+  try{
+    const owner = Auth.getUser(req)
+    const tasks = await Task.getByPositive(owner, true)
+    res.status(200).send({data: tasks})
+  } catch(err){
+    res.status(400).send()
+  }
+})
+
+/**
+ * @swagger
+ * /task/negatives:
+ *   get:
+ *     tags: [
+ *       task
+ *     ]
+ *     sumary: Return all negatives tasks
+ *     description: Return all negatives tasks of the user
+ *     parameters:
+ *      - name: authorization
+ *        in: header
+ *        required: true
+ *        description: Recebido ao logar
+ *        schema:
+ *          type: string
+ *     responses:
+ *       200:
+ *         description: success
+ *         schema:
+ *           type: object
+ *           properties:
+ *             data:
+ *               type: object
+ *               $ref: '#/definitions/Task'
+ */
+router.get('/negatives', async function(req, res) {
+  try{
+    const owner = Auth.getUser(req)
+    const tasks = await Task.getByPositive(owner, false)
+    res.status(200).send({data: tasks})
   } catch(err){
     res.status(400).send()
   }

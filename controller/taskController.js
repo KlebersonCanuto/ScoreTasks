@@ -2,7 +2,7 @@ const Task = require('../model/taskModel')
 
 const create = async (args) => {
   try{
-    const task = new Task({...args})
+    const task = new Task({...args, done: false})
     await task.save()
     return task
   } catch(err){
@@ -23,6 +23,24 @@ const getById = async (id) => {
   try{
     const task = await Task.findById(id).exec()
     return task
+  } catch(err){
+    throw 400
+  }
+};
+
+const getByPositive = async (owner, positive) => {
+  try{
+    const tasks = await Task.find({owner, positive}).exec()
+    return tasks
+  } catch(err){
+    throw 400
+  }
+};
+
+const getCategory = async (owner, category) => {
+  try{
+    const tasks = await Task.find({owner, categories: category}).exec()
+    return tasks
   } catch(err){
     throw 400
   }
@@ -78,4 +96,6 @@ module.exports = {
   update,
   remove,
   changeDone,
+  getByPositive,
+  getCategory
 }
