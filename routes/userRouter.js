@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const user = require('../controller/userController')
+const User = require('../controller/userController')
 
 /**
  * @swagger
@@ -27,8 +27,8 @@ const user = require('../controller/userController')
  */
 router.get('/', async function(_, res) {
   try{
-    const data = await user.getAll()
-    res.status(200).send({data: data})
+    const users = await User.getAll()
+    res.status(200).send({data: users})
   } catch(err){
     res.status(400).send()
   }
@@ -71,8 +71,8 @@ router.get('/', async function(_, res) {
  */
 router.post('/', async function(req, res) {
   try{
-    const data = await user.create(req.body)
-    res.status(200).send({data: data})
+    const user = await User.create(req.body)
+    res.status(200).send({data: user})
   } catch(err){
     res.status(400).send()
   }
@@ -103,8 +103,8 @@ router.post('/', async function(req, res) {
  */
 router.get('/:user_id', async function(req, res) {
   try{
-    const data = await user.getById(req.params.user_id)
-    res.status(200).send({data: data})
+    const user = await User.getById(req.params.user_id)
+    res.status(200).send({data: user})
   } catch(err){
     res.status(400).send()
   }
@@ -117,8 +117,8 @@ router.get('/:user_id', async function(req, res) {
  *     tags: [
  *       user
  *     ]
- *     sumary: Create a new user
- *     description: Create a new user
+ *     sumary: Edit a user
+ *     description: Edit a user
  *     consumes:
  *       - application/json
  *     parameters:
@@ -146,8 +146,8 @@ router.get('/:user_id', async function(req, res) {
  */
 router.put('/:user_id', async function(req, res) {
   try{
-    const data = await user.update(req.params.user_id, req.body)
-    res.status(200).send({data: data})
+    const user = await User.update(req.params.user_id, req.body)
+    res.status(200).send({data: user})
   } catch(err){
     res.status(400).send()
   }
@@ -180,8 +180,8 @@ router.put('/:user_id', async function(req, res) {
  */
 router.delete('/:user_id', async function(req, res) {
   try{
-    const data = await user.remove(req.params.user_id)
-    res.status(200).send({data: data})
+    const user = await User.remove(req.params.user_id)
+    res.status(200).send({data: user})
   } catch(err){
     res.status(400).send()
   }
