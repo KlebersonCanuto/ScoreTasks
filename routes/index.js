@@ -11,6 +11,7 @@ const router = express.Router()
  *       - points
  *       - positive
  *       - owner
+ *       - done
  *     properties:
  *       name:
  *         type: string
@@ -23,6 +24,8 @@ const router = express.Router()
  *       points:
  *         type: number
  *       positive:
+ *         type: boolean
+ *       done:
  *         type: boolean
  *       _v:
  *         type: integer

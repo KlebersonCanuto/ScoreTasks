@@ -6,7 +6,8 @@ const TaskSchema = mongoose.Schema({
   points: Number,
   positive: Boolean,
   categories: Array,
-  owner: String
+  owner: String,
+  done: Boolean
 })
 
 const Task = mongoose.model('task', TaskSchema)

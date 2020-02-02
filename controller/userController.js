@@ -60,6 +60,17 @@ const update = async (id, args) => {
   }
 }
 
+const updatePoints = async (id, points) => {
+  try{
+    let user = await User.findById(id).exec()
+    user.points = user.points+points
+    await user.save()
+    return user
+  } catch(err){
+    throw 400
+  }
+}
+
 const remove = async (id) => {
   try{
     const user = await User.findById(id).select(['-password']).exec()
@@ -76,5 +87,6 @@ module.exports = {
   getByUsername,
   create,
   update,
-  remove
+  remove,
+  updatePoints
 }

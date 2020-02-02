@@ -44,6 +44,22 @@ const update = async (id, args) => {
   }
 }
 
+const changeDone = async (id) => {
+  try{
+    let task = await Task.findById(id).exec()
+    let points = task.points
+    if(task.done)
+      points = points * -1
+    if(!task.positive)
+      points = points * -1
+    task.done = !taks.done
+    await task.save()
+    return points
+  } catch(err){
+    throw 400
+  }
+}
+
 const remove = async (id) => {
   try{
     const task = await Task.findById(id).exec()
@@ -59,5 +75,6 @@ module.exports = {
   getById,
   create,
   update,
-  remove
+  remove,
+  changeDone,
 }

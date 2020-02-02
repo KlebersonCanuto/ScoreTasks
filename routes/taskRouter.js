@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const task = require('../controller/taskController')
+const User = require('../controller/userController')
 const Auth = require("../utils/authentication")
 
 /**
@@ -87,7 +88,7 @@ router.get('/', async function(req, res) {
 router.post('/', async function(req, res) {
   try{
     const owner = Auth.getUser(req)
-    const data = await task.create({...req.body, owner})
+    const data = await task.create({...req.body, owner, done: false})
     res.status(200).send({data: data})
   } catch(err){
     res.status(400).send()
@@ -126,6 +127,17 @@ router.post('/', async function(req, res) {
 router.get('/:task_id', async function(req, res) {
   try{
     const data = await task.getById(req.params.task_id)
+    res.status(200).send({data: data})
+  } catch(err){
+    res.status(400).send()
+  }
+})
+
+router.post('/:task_id', async function(req, res) {
+  try{
+    const owner = Auth.getUser(req)
+    const points = await task.changeDone(req.params.task_id)
+    User.updatePoints(owner, points)
     res.status(200).send({data: data})
   } catch(err){
     res.status(400).send()
