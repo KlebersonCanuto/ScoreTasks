@@ -7,7 +7,7 @@ const options = {
       version: '1.0.0',
       description: 'API',
     },
-    host: 'localhost:3030',
+    host: 'https://scoretasks.herokuapp.com',
     basePath: '/',
   },
   apis: ['./routes/*.js']

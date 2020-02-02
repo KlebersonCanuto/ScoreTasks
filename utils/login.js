@@ -10,7 +10,7 @@ const login = async (req, res) => {
     const same = bcrypt.compareSync(password, user.password)
     const token = Auth.auth(id)
     if(same)
-      res.status(200).send({auth: true, token: token, username: username})
+      res.status(200).send({auth: true, token: token})
     else
       res.status(302).send({auth: false})
   } catch(err){

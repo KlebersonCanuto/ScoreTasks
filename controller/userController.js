@@ -5,7 +5,7 @@ const create = async (args) => {
   try{
     const { username, password, confirmPassword, email } = args
     if(password === confirmPassword){
-      const hash = await bcrypt.hashSync(password, Number(process.env.HASH))
+      const hash = bcrypt.hashSync(password, Number(process.env.HASH))
       let user = new User()
       user.username = username.toLowerCase()
       user.password = hash
