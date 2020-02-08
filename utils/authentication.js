@@ -52,4 +52,5 @@ module.exports = {
   auth,
   getUser,
   isValid,
+  getUserByToken
 }

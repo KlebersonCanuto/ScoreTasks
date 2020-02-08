@@ -63,4 +63,31 @@ router.get('/', function(req, res) {
   login.isValid(req, res)
 })
 
+/**
+ * @swagger
+ * /login:
+ *   get:
+ *     tags: [
+ *       login
+ *     ]
+ *     summary: Retorna seus dados
+ *     description: Retorna seus dados
+ *     consumes:
+ *      - application/json
+ *     parameters:
+ *      - name: authorization
+ *        in: header
+ *        required: true
+ *        description: Recebido ao logar
+ *        schema:
+ *         type: string
+ *         $ref: '#/definitions/token'
+ *     responses:
+ *       200:
+ *         description: Seus dados foram retornados com sucesso
+ */
+router.get('/me', function(req, res) {
+  login.getData(req, res)
+})
+
 module.exports = router

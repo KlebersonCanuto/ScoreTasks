@@ -51,8 +51,6 @@ router.get('/', async function(_, res) {
  *        schema:
  *         type: object
  *         properties:
- *           username:
- *             type: string
  *           email:
  *             type: string
  *           password:
@@ -130,8 +128,6 @@ router.get('/:user_id', async function(req, res) {
  *         schema:
  *           type: object
  *           properties:
- *             username:
- *               type: string
  *             email:
  *               type: string
  *     responses:

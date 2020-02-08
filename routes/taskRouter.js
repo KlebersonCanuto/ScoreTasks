@@ -272,8 +272,8 @@ router.get('/negatives', async function(req, res) {
 router.post('/:task_id', async function(req, res) {
   try{
     const owner = Auth.getUser(req)
-    const { points, task } = await Task.changeDone(req.params.task_id, owner)
-    await User.updatePoints(owner, points)
+    const { points, task, numTasks } = await Task.changeDone(req.params.task_id, owner)
+    await User.updatePoints(owner, points, numTasks)
     res.status(200).send({data: task})
   } catch(err){
     res.status(400).send()

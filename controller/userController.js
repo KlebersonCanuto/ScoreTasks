@@ -3,13 +3,12 @@ const bcrypt = require('bcrypt')
 
 const create = async (args) => {
   try{
-    const { username, password, confirmPassword, email } = args
+    const { password, confirmPassword, email } = args
     if(password === confirmPassword){
       const hash = bcrypt.hashSync(password, Number(process.env.HASH))
       let user = new User()
-      user.username = username.toLowerCase()
       user.password = hash
-      user.email = email
+      user.email = email.toLowerCase()
       await user.save()
       return user
     } else {
@@ -38,9 +37,9 @@ const getById = async (id) => {
   }
 }
 
-const getByUsername = async (username) => {
+const getByEmail = async (email) => {
   try{
-    const user = await User.findOne({username}).exec()
+    const user = await User.findOne({email}).exec()
     return user
   } catch(err){
     throw 400
@@ -49,9 +48,8 @@ const getByUsername = async (username) => {
 
 const update = async (id, args) => {
   try{
-    const { username, email } = args
+    const { email } = args
     let user = await User.findById(id).exec()
-    user.username = username
     user.email = email
     await user.save()
     return user
@@ -60,10 +58,11 @@ const update = async (id, args) => {
   }
 }
 
-const updatePoints = async (id, points) => {
+const updatePoints = async (id, points, numTasks) => {
   try{
     let user = await User.findById(id).exec()
     user.points = user.points+points
+    user.tasksDone = user.tasksDone+numTasks
     await user.save()
     return user
   } catch(err){
@@ -84,7 +83,7 @@ const remove = async (id) => {
 module.exports = {
   getAll,
   getById,
-  getByUsername,
+  getByEmail,
   create,
   update,
   remove,

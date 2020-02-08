@@ -4,8 +4,8 @@ const bcrypt = require("bcrypt")
 
 const login = async (req, res) => {
   try{
-    const { username, password } = req.body
-    const user = await User.getByUsername(username)
+    const { email, password } = req.body
+    const user = await User.getByEmail(email)
     const id = user.id
     const same = bcrypt.compareSync(password, user.password)
     const token = Auth.auth(id)
@@ -15,6 +15,16 @@ const login = async (req, res) => {
       res.status(302).send({auth: false})
   } catch(err){
     res.status(400).send({auth: false})
+  }
+}
+
+const getData = (req, res) => {
+  try{
+    const id = Auth.getUser(req)
+    const user = User.getById(id)
+    res.status(200).send(user)
+  } catch(err){
+    res.status(400).send()
   }
 }
 
@@ -30,4 +40,5 @@ const isValid = (req, res) => {
 module.exports = {
   login,
   isValid,
+  getData
 }
