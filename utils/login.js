@@ -22,7 +22,7 @@ const getData = (req, res) => {
   try{
     const id = Auth.getUser(req)
     const user = User.getById(id)
-    res.status(200).send(user)
+    res.status(200).send({data: user})
   } catch(err){
     res.status(400).send()
   }
