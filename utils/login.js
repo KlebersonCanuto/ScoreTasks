@@ -18,11 +18,11 @@ const login = async (req, res) => {
   }
 }
 
-const getData = (req, res) => {
+const getData = async (req, res) => {
   try{
     const id = Auth.getUser(req)
-    const user = User.getById(id)
-    res.status(200).send({data: user})
+    const user = await User.getById(id)
+    res.status(200).send(user)
   } catch(err){
     res.status(400).send()
   }
