@@ -71,7 +71,7 @@ const changeDone = async (id, owner) => {
     if(task.done) points = points * -1
     if(!task.positive) points = points * -1
     const numTasks = task.done?-1:1 
-    task.done = !taks.done
+    task.done = !task.done
     await task.save()
     return { points, task, numTasks }
   } catch(err){
